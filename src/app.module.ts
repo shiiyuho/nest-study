@@ -6,7 +6,7 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersController } from './users/users.controller';
 import { UsersService } from './users/users.service';
-import { ProductModule } from './product/product.module';
+import { ProductModule } from './Product/products.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
