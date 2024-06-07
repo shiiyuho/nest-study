@@ -10,31 +10,15 @@ import {
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { Product } from './product.enthity';
+import { CreateProductDto } from './productDto/create-product.dto';
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productService: ProductsService) {}
 
   @Post()
-  productsCreate(
-    @Body('id') id: number,
-    @Body('name') name: string,
-    @Body('description ') description: string,
-    @Body('price') price: number,
-    @Body('createUserId') createUserId: number,
-    @Body('createdAt ') createdAt: Date,
-    @Body('updatedAt ') updatedAt: Date,
-  ): Product {
-    const product: Product = {
-      id,
-      name,
-      description,
-      price,
-      createUserId,
-      createdAt,
-      updatedAt,
-    };
-    return this.productService.productsCreate(product);
+  productsCreate(@Body() createProductDto: CreateProductDto): Promise<Product> {
+    return this.productService.productsCreate(createProductDto);
   }
   @Get(':id')
   productsFindById(@Param('id') id: number): Product {

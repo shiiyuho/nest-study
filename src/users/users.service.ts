@@ -21,6 +21,7 @@ export class UsersService {
     }
     const user: User = {
       ...createUserDto,
+      products: [],
     };
     this.users.push(user);
     return user;
