@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Product } from './product.enthity';
+import { Product } from './product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from 'src/users/user.enthity';
+import { User } from 'src/users/user.entity';
 import { CreateProductDto } from './productDto/create-product.dto';
 
 @Injectable()
