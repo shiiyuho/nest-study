@@ -18,22 +18,22 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get(':id')
-  findById(@Param('id') id: number): User {
+  async findById(@Param('id') id: number): Promise<User> {
     return this.usersService.findById(id);
   }
   @Post()
-  create(@Body() createUserDto: CreateUserDto): User {
-    return this.usersService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
+    return await this.usersService.create(createUserDto);
   }
   @Put(':id')
   async update(
     @Param('id') id: number,
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<User> {
-    return this.usersService.update(id, updateUserDto);
+    return await this.usersService.update(id, updateUserDto);
   }
   @Delete(':id')
-  delete(@Param('id') id: number): void {
-    return this.usersService.delete(id);
+  async delete(@Param('id') id: number): Promise<void> {
+    return await this.usersService.delete(id);
   }
 }

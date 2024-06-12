@@ -3,46 +3,69 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Product } from './product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from 'src/users/user.entity';
 import { CreateProductDto } from './productDto/create-product.dto';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private productRepository: Repository<Product>,
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
+    private readonly usersService: UsersService,
   ) {}
 
   private products: Product[] = [];
   async productsCreate(createProductDto: CreateProductDto): Promise<Product> {
     const { name, price, createUserId } = createProductDto;
-    const user = await this.userRepository.findOne({
-      where: { id: createUserId },
-    });
+    console.log('Product作成時のユーザーID:', createUserId); // デバッグ用ログ
+
+    console.log(createProductDto);
+
+    const user = await this.usersService.findById(createUserId);
+    console.log(user);
+
     if (!user) {
-      throw new NotFoundException();
+      throw new NotFoundException('ユーザーが見つかりませんですはい');
     }
+
     const product = new Product();
     product.name = name;
     product.price = price;
     product.user = user;
-    product.createUserId = createUserId;
+    // product.createUserId = createUserId;
 
     return this.productRepository.save(product);
   }
 
-  productsFindById(id: number): Product {
-    return this.products.find((product) => product.id === id);
-  }
-
-  productsUpdate(id: number): Product {
-    const product = this.productsFindById(id);
+  async productsFindById(id: number): Promise<Product> {
+    const product = await this.productRepository.findOne(id, {
+      relations: ['user'],
+    });
+    if (!product) {
+      throw new NotFoundException('商品が見つかりません');
+    }
     return product;
   }
 
-  productsDelete(id: number): void {
-    this.products = this.products.filter((product) => product.id !== id);
+  async productsUpdate(
+    id: number,
+    updateProductDto: Partial<CreateProductDto>,
+  ): Promise<Product> {
+    const product = await this.productsFindById(id);
+    if (!product) {
+      throw new NotFoundException('商品が見つかりませんよーーーーー');
+    }
+
+    Object.assign(product, updateProductDto);
+    return this.productRepository.save(product);
+  }
+
+  async productsDelete(id: number): Promise<void> {
+    const product = await this.productsFindById(id);
+    if (!product) {
+      throw new NotFoundException('商品が見つかりませんねーーーーーーー');
+    }
+
+    await this.productRepository.remove(product);
   }
 }

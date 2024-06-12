@@ -6,16 +6,22 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 export class Product {
   @PrimaryGeneratedColumn()
   id: number;
+
   @Column()
   name: string;
+
   @Column()
   description: string;
+
   @Column()
   price: number;
+
   @Column()
   createUserId: number;
+
   @Column()
   createdAt: Date;
+
   @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
@@ -24,5 +30,5 @@ export class Product {
   updatedAt: Date;
 
   @ManyToOne(() => User, (user) => user.products)
-  user: User;
+  user: User; //UserのIdを入れる場所
 }
