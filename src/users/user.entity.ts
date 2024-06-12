@@ -18,4 +18,10 @@ export class User {
 
   @OneToMany(() => Product, (product) => product.user)
   products: Product[];
+@Column()
+  userName:string;
+@Column()
+  role:string;
+  @Column()
+  lastLoginAt:string;
 }
