@@ -12,7 +12,7 @@ export class UsersService {
   async findById(id: number): Promise<User> {
     console.log('検索対象ID:', id);
 
-    const found = await this.userRepository.findOne(id);
+    const found = await this.userRepository.findById(id);
     if (!found) {
       throw new NotFoundException('ユーザーが見つかりません');
     }

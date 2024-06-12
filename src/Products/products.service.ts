@@ -21,18 +21,25 @@ export class ProductsService {
 
     console.log(createProductDto);
 
-    const user = await this.usersService.findById(createUserId);
-    console.log(user);
+    let user = null;
 
-    if (!user) {
-      throw new NotFoundException('ユーザーが見つかりませんですはい');
+    if (createUserId) {
+      // createUserIdが存在する場合のみユーザーを取得
+      user = await this.usersService.findById(createUserId);
+      console.log(user);
+
+      if (!user) {
+        throw new NotFoundException('ユーザーが見つかりませんですはい');
+      }
     }
-
-    const product = new Product();
-    product.name = name;
-    product.price = price;
-    product.user = user;
-    // product.createUserId = createUserId;
+    const product = this.productRepository.create({
+      name,
+      description: 'default description', // 必ずdescriptionフィールドに値を設定する
+      price,
+      user,
+      createUserId: createUserId || null,
+      createdAt: new Date(),
+    });
 
     return this.productRepository.save(product);
   }

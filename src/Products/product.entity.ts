@@ -16,10 +16,10 @@ export class Product {
   @Column()
   price: number;
 
-  @Column()
+  @Column({ nullable: true, default: null })
   createUserId: number;
 
-  @Column()
+  @Column({ default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
   @Column({
@@ -29,6 +29,6 @@ export class Product {
   })
   updatedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.products)
+  @ManyToOne(() => User, (user) => user.products, { nullable: true })
   user: User; //UserのIdを入れる場所
 }
