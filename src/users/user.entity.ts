@@ -18,7 +18,8 @@ export class User {
 
   @OneToMany(() => Product, (product) => product.user)
   products: Product[];
-@Column()
+
+@Column({unique:true})
   userName:string;
 @Column()
   role:string;
