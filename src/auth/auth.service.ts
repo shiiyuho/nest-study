@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { User } from 'src/users/user.entity';
 import { UserRepository } from 'src/users/user.repository';
-// import { CredentialsDto } from './dto/credentials.dto';
+import { CredentialsDto } from './dto/credentials.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -16,8 +17,19 @@ export class AuthService {
     return await this.userRepository.createUser(createUserDto);
   }
 
-  // async signIn(CredentialsDto: CredentialsDto) {
-  //   const { username, password } = CredentialsDto;
-  //   const user = await this.userRepository.findOne({ username });
-  // }
+  async signIn(
+    credentialsDto: CredentialsDto,
+  ): Promise<{ accessToken: string }> {
+    const { username, password } = credentialsDto; // 修正箇所
+    const user = await this.userRepository.findOne({ where: { username } });
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const payload = { id: user.id, username: user.userName };
+      const accessToken = await this.jwtService.sign(payload);
+      return { accessToken };
+    }
+    throw new UnauthorizedException(
+      'ユーザー名またはパスワードを確認してください',
+    );
+  }
 }

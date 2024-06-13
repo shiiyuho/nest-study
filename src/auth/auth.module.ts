@@ -19,6 +19,7 @@ import { UsersModule } from 'src/users/users.module';
         expiresIn: 3600,
       },
     }),
+    UsersModule,
   ],
   controllers: [AuthController],
   providers: [AuthService],
