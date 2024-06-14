@@ -7,7 +7,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   name: string;
 
   @Column()
@@ -19,10 +19,10 @@ export class User {
   @OneToMany(() => Product, (product) => product.user)
   products: Product[];
 
-@Column({unique:true})
-  userName:string;
-@Column()
-  role:string;
-  @Column()
-  lastLoginAt:string;
+  @Column({ nullable: false, unique: true })
+  userName: string;
+  @Column({ nullable: false, default: 'user' })
+  role: string;
+  @Column({ nullable: true })
+  lastLoginAt: string;
 }
