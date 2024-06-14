@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
 
+//ユーザーが作成される際のDTO
 export class CreateUserDto {
   id: number;
 
