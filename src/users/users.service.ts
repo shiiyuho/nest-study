@@ -6,7 +6,9 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
+  //配列を空に
   private users: User[] = [];
+  //ユーザー取得のメソッド
   findById(id: number): User {
     const found = this.users.find((user) => user.id === id);
     if (!found) {
@@ -14,6 +16,7 @@ export class UsersService {
     }
     return found;
   }
+  //ユーザー作成のメソッド
   create(createUserDto: CreateUserDto): User {
     const found = this.users.find((user) => user.email === createUserDto.email);
     if (found) {
@@ -26,6 +29,7 @@ export class UsersService {
     return user;
   }
 
+  //ユーザー更新のメソッド
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const userIndex = this.users.findIndex((user) => user.id === id);
 
@@ -43,6 +47,7 @@ export class UsersService {
     this.users[userIndex] = user; // インデックスを使用してユーザーを更新
     return user;
   }
+  //ユーザー削除のメソッド
   delete(id: number): void {
     this.users = this.users.filter((user) => user.id !== id);
   }
