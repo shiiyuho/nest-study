@@ -2,5 +2,5 @@
 export class CreateProductDto {
   name: string;
   price: number;
-  createUserId: number;
+  description: string;
 }

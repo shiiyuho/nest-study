@@ -2,18 +2,23 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { Product } from './product.entity';
 import { CreateProductDto } from './productDto/create-product.dto';
+import { User } from 'src/users/user.entity';
 
 @EntityRepository(Product)
 export class ProductRepository extends Repository<Product> {
-    async createProduct(createProductDto:CreateProductDto):Promise<Product>{
-        const{name,price,createUserId}=createProductDto;
-        const product=this.create({
-            name,
-            price,
-            createUserId,
-        });
+  async createProduct(
+    createProductDto: CreateProductDto,
+    user: User,
+  ): Promise<Product> {
+    const { name, price, description } = createProductDto;
+    const product = this.create({
+      name,
+      price,
+      description,
+      user,
+    });
 
-        await this.save(product);
-        return product;
-    }
+    await this.save(product);
+    return product;
+  }
 }
