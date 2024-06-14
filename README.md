@@ -1,73 +1,48 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# 基本ルール
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+- `nest-study`フォルダを作成し、`README.md`ファイルを作成し、このルールをコピペで貼り付けてください。
+- `nest-study`を git のリモートリポジトリに push してください。
+- 課題ごとにブランチを作成し、なるべくこまめにコミットを実施してください。コミット名は簡潔でわかりやすいものにしてください。
+- 課題完了後プルリクエストを作成してください。プルリクエストを作成したら Slack にて完了と確認の旨を連絡してください。
+- プルリクエストのメッセージには、対応内容/エビデンスのスクリーンショットなどを記載し、わかりやすく説明できるようにしてください。
+- `README`には環境構築方法と起動方法、基本的なフォルダ構成の説明を記載してください。
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# コーディング規約
 
-## Description
+- 関数や変数には可能な限りコメントをつけましょう
+- コードの可読性を高めるために、一貫したインデントとスペースを使用するように`prettier`を入れてください。
+  - [Prettier 導入ガイド](https://deku.posstree.com/react/prettier/#google_vignette)
+- コードのエラー検知をしやすくするために、`eslint`を導入してください。
+  - [ESLint 導入ガイド](https://zenn.dev/ianchen0419/articles/3c4644d5f20bdb)
+- 関数名、変数名、クラス名などの命名規則に従う
+  - ファイル名：パスカルケース（PascalCase）
+  - 関数と変数：キャメルケース（camelCase）
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+# 時間管理と振り返り
 
-## Installation
+- 各課題を行う際に実施時間を計測してください、課題以外のものをする際にはタイマーを止めてください。
+- 完了後、「難しかったポイント」に自分なりのポイントを記載してください。
 
-```bash
-$ npm install
-```
+## 環境構築方法
 
-## Running the app
+- フォルダ名`nest-study`で、`nest new プロジェクト名`コマンドを実行。
 
-```bash
-# development
-$ npm run start
+## 起動方法
 
-# watch mode
-$ npm run start:dev
+1. ターミナルを開き「`npm install`」コマンドを実行
+2. 「`npm run start:dev`」コマンドを実行
 
-# production mode
-$ npm run start:prod
-```
+## 基本的なフォルダ構成の説明
 
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+- `nest-study`・・・ルートディレクトリ
+- `dist`・・・コンパイル時に ts ファイルをもとに作成されたファイルを保存するフォルダ（ignore 対象）
+- `node_module`・・・package.json を元にしてインストールされる各種パッケージがインストールされているフォルダ（ignore 対象）
+- `src`・・・ソースファイルの保存場所
+- `users`・・・ユーザー情報や、作成時の機能を保存している
+- `dto`・・・ユーザー情報を更新（update）作成（create）する際の機能を保存している
+- `product`・・・商品情報や、作成時の機能を保存している
+- `productDto`・・・商品作成時に行う機能を保存している
+- `migrations`・・・`dist`フォルダをもとにマイグレーションを作成し、DB に保存している
+- `auth`・・・ログイン情報や、認証認可の設定を保存
+- `guards`・・・商品を作成、更新、削除の際に認証機能を実装する、「AuthGuard」の設定を保存している
+- `decorate`・・・ユーザー情報を取得するための機能を保存している
