@@ -13,6 +13,8 @@ import { ProductsService } from './products.service';
 import { Product } from './product.entity';
 import { CreateProductDto } from './productDto/create-product.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { GetUser } from 'src/auth/decorater/get-user.decorator';
+import { User } from 'src/users/user.entity';
 
 @Controller('products')
 export class ProductsController {
@@ -22,8 +24,10 @@ export class ProductsController {
   @UseGuards(JwtAuthGuard)
   async productsCreate(
     @Body() createProductDto: CreateProductDto,
+    @GetUser() user: User,
   ): Promise<Product> {
-    return this.productService.productsCreate(createProductDto);
+    console.log(user);
+    return this.productService.productsCreate(createProductDto, user);
   }
 
   @Get(':id')
@@ -43,6 +47,8 @@ export class ProductsController {
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   async productsDelete(@Param('id') id: number): Promise<void> {
+    console.log(`ID を持つ製品を削除する
+: ${id}`);
     return this.productService.productsDelete(id);
   }
 }

@@ -2,46 +2,22 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Product } from './product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { CreateProductDto } from './productDto/create-product.dto';
-import { UsersService } from 'src/users/users.service';
+import { User } from 'src/users/user.entity';
+import { ProductRepository } from './product.repository';
 
 @Injectable()
 export class ProductsService {
   constructor(
-    @InjectRepository(Product)
-    private productRepository: Repository<Product>,
-    private readonly usersService: UsersService,
+    @InjectRepository(ProductRepository)
+    private productRepository: ProductRepository,
   ) {}
 
-  private products: Product[] = [];
-  async productsCreate(createProductDto: CreateProductDto): Promise<Product> {
-    const { name, price, createUserId } = createProductDto;
-    console.log('Product作成時のユーザーID:', createUserId); // デバッグ用ログ
-
-    console.log(createProductDto);
-
-    let user = null;
-
-    if (createUserId) {
-      // createUserIdが存在する場合のみユーザーを取得
-      user = await this.usersService.findById(createUserId);
-      console.log(user);
-
-      if (!user) {
-        throw new NotFoundException('ユーザーが見つかりませんですはい');
-      }
-    }
-    const product = this.productRepository.create({
-      name,
-      description: 'default description', // 必ずdescriptionフィールドに値を設定する
-      price,
-      user,
-      createUserId: createUserId || null,
-      createdAt: new Date(),
-    });
-
-    return this.productRepository.save(product);
+  async productsCreate(
+    createProductDto: CreateProductDto,
+    user: User,
+  ): Promise<Product> {
+    return this.productRepository.createProduct(createProductDto, user);
   }
 
   async productsFindById(id: number): Promise<Product> {
@@ -72,7 +48,8 @@ export class ProductsService {
     if (!product) {
       throw new NotFoundException('商品が見つかりませんねーーーーーーー');
     }
-
+    console.log(`製品の削除: ${product}`);
     await this.productRepository.remove(product);
+    console.log(`ID を持つ製品が削除されました: ${id}`);
   }
 }
