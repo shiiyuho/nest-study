@@ -3,7 +3,7 @@ import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 export class CredentialsDto {
   @IsString()
   @IsNotEmpty()
-  username: string;
+  userName: string;
 
   @IsString()
   @MinLength(8)
