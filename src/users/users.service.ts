@@ -11,7 +11,9 @@ export class UsersService {
   constructor(
     @InjectRepository(UserRepository)
     private readonly userRepository: UserRepository,
-  ) {}
+  ) {
+    console.log(this.userRepository);
+  }
 
   async findById(id: number): Promise<User> {
     console.log('検索対象ID:', id);
@@ -26,13 +28,15 @@ export class UsersService {
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
+    console.log('Creating user:', createUserDto); // デバッグ用ログ
     return this.userRepository.createUser(createUserDto);
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+    console.log('Updating user ID:', id, 'with data:', updateUserDto); // デバッグ用ログ
     const user = await this.findById(id);
     if (!user) {
-      throw new NotFoundException('ユーザーが見つかりませんよーーーー');
+      throw new NotFoundException('ユーザーが見つかりません');
     }
     Object.assign(user, updateUserDto);
     await this.userRepository.save(user);
@@ -40,6 +44,7 @@ export class UsersService {
   }
 
   async delete(id: number): Promise<void> {
+    console.log('Deleting user ID:', id); // デバッグ用ログ
     const user = await this.findById(id);
     if (!user) {
       throw new NotFoundException('ユーザーが見つかりません');
