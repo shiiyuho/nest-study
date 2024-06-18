@@ -19,6 +19,9 @@ export class Product {
   @Column({ nullable: true, default: null })
   createUserId: number;
 
+  @Column({ default: 10 })
+  stock: number;
+
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
