@@ -9,13 +9,13 @@ export class UserRepository extends Repository<User> {
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     console.log(createUserDto);
 
-    //パスワードをハッシュ化する処理
+    // パスワードをハッシュ化する処理
     const salt = await bcrypt.genSalt();
     const hashPassword = await bcrypt.hash(createUserDto.password, salt);
 
     const user = this.create({
       ...createUserDto,
-      password: hashPassword, //パスワードをハッシュ化
+      password: hashPassword, // パスワードをハッシュ化
     });
     console.log(user);
 

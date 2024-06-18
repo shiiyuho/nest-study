@@ -12,7 +12,10 @@ export class UsersService {
     @InjectRepository(UserRepository)
     private readonly userRepository: UserRepository,
   ) {
-    console.log(this.userRepository);
+    console.log(
+      'UsersService initialized with UserRepository:',
+      this.userRepository,
+    );
   }
 
   async findById(id: number): Promise<User> {
