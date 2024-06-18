@@ -17,15 +17,24 @@ export class BatchService {
     const startTime = new Date(); //開始時間の取得
     console.log(`バッチ処理の開始時間は、${startTime.toISOString()}`);
 
-    const updateData: QueryDeepPartialEntity<Product> = { stock: 10 };
-    const result = await this.productRepository.update({}, updateData);
-    console.log('在庫を10に更新しました');
+    try {
+      //更新処理
+      const updateData: QueryDeepPartialEntity<Product> = { stock: 10 };
+      const result = await this.productRepository.update({}, updateData);
+      console.log('在庫を10に更新しました');
 
-    //処理件数の表示
-    const affectedRows = result.affected || 0;
-    console.log(`処理件数は、${affectedRows}`);
+      //処理件数の表示
+      const affectedRows = result.affected || 0;
+      console.log(`処理件数は、${affectedRows}`);
 
-    const endTime = new Date(); //終了時間の取得
-    console.log(`バッチ処理の終了時間は、${endTime.toISOString()}`);
+      const endTime = new Date(); //終了時間の取得
+      console.log(`バッチ処理の終了時間は、${endTime.toISOString()}`);
+
+      //エラー処理
+    } catch (error) {
+      const errorTime = new Date();
+      console.error(`バッチ処理中にエラーが発生しました。${error.message}`);
+      console.error(`エラー発生の時間は、${errorTime.toISOString()}`);
+    }
   }
 }
