@@ -12,10 +12,20 @@ export class BatchService {
     private readonly productRepository: Repository<Product>,
   ) {}
 
-  @Cron('*/5 * * * *') //5分おきにストック補充
+  @Cron('*/5 * * * *') //5分おきにストック補充（スケジューリングライブラリ）
   async updateProductStock() {
+    const startTime = new Date(); //開始時間の取得
+    console.log(`バッチ処理の開始時間は、${startTime.toISOString()}`);
+
     const updateData: QueryDeepPartialEntity<Product> = { stock: 10 };
-    await this.productRepository.update({}, updateData);
+    const result = await this.productRepository.update({}, updateData);
     console.log('在庫を10に更新しました');
+
+    //処理件数の表示
+    const affectedRows = result.affected || 0;
+    console.log(`処理件数は、${affectedRows}`);
+
+    const endTime = new Date(); //終了時間の取得
+    console.log(`バッチ処理の終了時間は、${endTime.toISOString()}`);
   }
 }
