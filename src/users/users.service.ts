@@ -47,7 +47,6 @@ export class UsersService {
   }
 
   async delete(id: number): Promise<void> {
-    console.log('Deleting user ID:', id); // デバッグ用ログ
     const user = await this.findById(id);
     if (!user) {
       throw new NotFoundException('ユーザーが見つかりません');
