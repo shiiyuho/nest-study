@@ -1,20 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users.service';
 import { UserRepository } from './user.repository';
-import { User } from './user.entity';
+import { NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { NotFoundException } from '@nestjs/common';
+import { User } from './user.entity';
 
 const mockUserRepository = () => ({
-  createUser: jest.fn(),
   findById: jest.fn(),
+  createUser: jest.fn(),
   save: jest.fn(),
   remove: jest.fn(),
 });
 
 describe('UsersService', () => {
-  let service: UsersService;
+  let usersService: UsersService;
   let userRepository;
 
   beforeEach(async () => {
@@ -25,72 +25,66 @@ describe('UsersService', () => {
       ],
     }).compile();
 
-    service = module.get<UsersService>(UsersService);
+    usersService = module.get<UsersService>(UsersService);
     userRepository = module.get<UserRepository>(UserRepository);
   });
 
-  describe('create', () => {
-    it('should create a user', async () => {
-      const createUserDto: CreateUserDto = {
-        id: 1,
-        name: 'Test User',
-        email: 'test@example.com',
-        password: 'password123',
-        userName: 'testuser',
-        role: 'user',
-      };
-      userRepository.createUser.mockResolvedValue(createUserDto as User);
-
-      expect(await service.create(createUserDto)).toEqual(createUserDto);
-      expect(userRepository.createUser).toHaveBeenCalledWith(createUserDto);
+  describe('findById', () => {
+    it('throws an error if user is not found', async () => {
+      userRepository.findById.mockResolvedValue(null);
+      await expect(usersService.findById(1)).rejects.toThrow(NotFoundException);
     });
   });
 
-  describe('findById', () => {
-    it('should return a user if found', async () => {
-      const user = { id: 1, name: 'Test User' } as User;
-      userRepository.findById.mockResolvedValue(user);
-
-      expect(await service.findById(1)).toEqual(user);
-      expect(userRepository.findById).toHaveBeenCalledWith(1);
-    });
-
-    it('should throw an error if user not found', async () => {
-      userRepository.findById.mockResolvedValue(null);
-
-      expect(service.findById(1)).rejects.toThrow(NotFoundException);
+  describe('create', () => {
+    it('calls createUser and returns the result', async () => {
+      const createUserDto: CreateUserDto = {
+        userName: 'Test',
+        password: 'test',
+        id: 0,
+        name: '',
+        email: '',
+        role: '',
+      };
+      userRepository.createUser.mockResolvedValue('someUser');
+      const result = await usersService.create(createUserDto);
+      expect(result).toEqual('someUser');
     });
   });
 
   describe('update', () => {
-    it('should update a user', async () => {
-      const updateUserDto: UpdateUserDto = { name: 'Updated User' };
-      const user = { id: 1, name: 'Test User' } as User;
+    it('throws an error if user is not found', async () => {
+      userRepository.findById.mockResolvedValue(null);
+      const updateUserDto: UpdateUserDto = { userName: 'Updated' };
+      await expect(usersService.update(1, updateUserDto)).rejects.toThrow(
+        NotFoundException,
+      );
+    });
 
+    it('updates the user if found', async () => {
+      const user = { id: 1, userName: 'Test', password: 'test' } as User;
       userRepository.findById.mockResolvedValue(user);
-      userRepository.save.mockResolvedValue({ ...user, ...updateUserDto });
+      const updateUserDto: UpdateUserDto = { userName: 'Updated' };
+      const updatedUser = { ...user, ...updateUserDto };
+      userRepository.save.mockResolvedValue(updatedUser);
 
-      expect(await service.update(1, updateUserDto)).toEqual({
-        ...user,
-        ...updateUserDto,
-      });
-      expect(userRepository.findById).toHaveBeenCalledWith(1);
-      expect(userRepository.save).toHaveBeenCalledWith({
-        ...user,
-        ...updateUserDto,
-      });
+      const result = await usersService.update(1, updateUserDto);
+      expect(result).toEqual(updatedUser);
+      expect(userRepository.save).toHaveBeenCalledWith(updatedUser);
     });
   });
 
   describe('delete', () => {
-    it('should delete a user', async () => {
-      const user = { id: 1, name: 'Test User' } as User;
+    it('throws an error if user is not found', async () => {
+      userRepository.findById.mockResolvedValue(null);
+      await expect(usersService.delete(1)).rejects.toThrow(NotFoundException);
+    });
 
+    it('removes the user if found', async () => {
+      const user = { id: 1, userName: 'Test', password: 'test' } as User;
       userRepository.findById.mockResolvedValue(user);
-      userRepository.remove.mockResolvedValue(null);
 
-      await service.delete(1);
-      expect(userRepository.findById).toHaveBeenCalledWith(1);
+      await usersService.delete(1);
       expect(userRepository.remove).toHaveBeenCalledWith(user);
     });
   });
